@@ -36,6 +36,9 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+      - id: get_date
+        run: echo "date=$(date -u +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+    
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -96,7 +99,7 @@ jobs:
       - name: Upload ImmortWrt as release assets
         uses: softprops/action-gh-release@v2.2.1
         with:
-          tag_name: Autobuild-x86-64
+          tag_name: Openwrt-${{ steps.get_date.outputs.date }}-x86-64
           body_path: ${{ github.workspace }}/info.md
           files: |
             ${{ github.workspace }}/*squashfs-combined-efi.img.gz

@@ -81,8 +81,13 @@ jobs:
 
       - name: Generate Firmware SHA-256
         run: |
-          cp ${{ github.workspace }}/bin/targets/x86/64/*squashfs-combined-efi.img.gz ${{ github.workspace }}
-          for file in *squashfs-combined-efi.img.gz; do
+          echo "当前工作目录：$(pwd)"
+          echo ">>> 列出 bin/targets/x86/64 下的所有文件："
+          ls -alh "${{ github.workspace }}/bin/targets/x86/64/"
+      
+          echo ">>> 拷贝并生成 SHA-256："
+          cp ${{ github.workspace }}/bin/targets/x86/64/*ext4-combined-efi.img.gz ${{ github.workspace }}
+          for file in *ext4-combined-efi.img.gz; do
             sha256sum "$file" > "$file.sha256"
             sha256sum -c "$file.sha256"
           done
@@ -102,7 +107,7 @@ jobs:
           tag_name: Openwrt-${{ steps.get_date.outputs.date }}-x86-64
           body_path: ${{ github.workspace }}/info.md
           files: |
-            ${{ github.workspace }}/*squashfs-combined-efi.img.gz
+            ${{ github.workspace }}/*ext4-combined-efi.img.gz
             ${{ github.workspace }}/*.sha256
           token: ${{ secrets.GITHUB_TOKEN }}
         env:

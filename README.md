@@ -34,8 +34,7 @@ docker run --rm -i \
   # -e ENABLE_PPPOE=true \
   # -e PPPOE_ACCOUNT=007 \
   # -e PPPOE_PASSWORD=886 \
-  immortalwrt/imagebuilder:x86-64-openwrt-24.10.2 \
-  /bin/bash /home/build/immortalwrt/build.sh
+  immortalwrt/imagebuilder:x86-64-openwrt-24.10.2 /bin/bash /home/build/immortalwrt/build.sh
 ```
 ### 可选环境变量
 * PROFILE<br/>

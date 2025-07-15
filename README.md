@@ -14,6 +14,41 @@
 > 7、新增树莓派①②③④⑤<br>
 > 8、新增第三方软件包的集成功能 https://github.com/wukongdaily/AutoBuildImmortalWrt/discussions/209
 
+## 如需通过自己服务器构建
+1. 克隆源码仓库并进入目录
+```bash
+git clone https://github.com/lklbjn/AutoBuildImmortalWrt.git
+cd AutoBuildImmortalWrt
+```
+2. 执行 Docker 命令开始编译
+```bash
+docker run --rm -i \
+  --user root \
+  -v "./bin:/home/build/immortalwrt/bin" \
+  -v "./files:/home/build/immortalwrt/files" \
+  -v "./x86-64/imm.config:/home/build/immortalwrt/.config" \
+  -v "./shell/prepare-packages.sh:/home/build/immortalwrt/prepare-packages.sh" \
+  -v "./x86-64/24.10/build.sh:/home/build/immortalwrt/build.sh" \
+  -e PROFILE=1024 \
+  # -e INCLUDE_DOCKER=false \
+  # -e ENABLE_PPPOE=true \
+  # -e PPPOE_ACCOUNT=007 \
+  # -e PPPOE_PASSWORD=886 \
+  immortalwrt/imagebuilder:x86-64-openwrt-24.10.2 \
+  /bin/bash /home/build/immortalwrt/build.sh
+```
+### 可选环境变量
+* PROFILE<br/>
+  设备可用存储空间（MB），示例中设为 1024。
+* INCLUDE_DOCKER<br/>
+  是否在固件中包含 Docker 支持，false 表示不包含。
+  > 不需要的话，执行时直接删除那一行就行了
+* ENABLE_PPPOE<br/>
+  是否启用 PPPoE，true/false。
+  > 不需要的话，执行时直接删除那一行就行了
+* PPPOE_ACCOUNT / PPPOE_PASSWORD<br/>
+  如果启用 PPPoE，可在此设置拨号账号和密码。
+  > 不需要的话，执行时直接删除那一行就行了
 
 ## 如何查询imm仓库内有哪些插件
 https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/24.10.2/packages/x86_64/luci/
